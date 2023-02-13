@@ -8,9 +8,10 @@ const githubStrategy: GitHubStrategy = new GitHubStrategy(
         callbackURL: "",
         passReqToCallback: true,
     },
-    
-    /* FIX ME 😭 */
-    async (req: any, accessToken: any, refreshToken: any, profile: any, done: any) => {},
+
+    async (req: Express.Request, accessToken: string, refreshToken: string, profile: any, done: (err?: Error | null, profile?: any) => void) => {
+        return done(null, profile);
+    },
 );
 
 const passportGitHubStrategy: PassportStrategy = {
