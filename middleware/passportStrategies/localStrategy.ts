@@ -9,12 +9,7 @@ const localStrategy = new LocalStrategy(
     passwordField: "password",
   },
   (email, password, done) => {
-    const user = getUserByEmailIdAndPassword(email, password);
-    return user
-      ? done(null, user)
-      : done(null, false, {
-        message: "Your login details are not valid. Please try again",
-      });
+    return getUserByEmailIdAndPassword(email, password, done);
   }
 );
 
