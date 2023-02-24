@@ -1,0 +1,20 @@
+<h1 class="mt-4">Dashboard</h1>
+<p class="lead mb-3">Welcome <%= user.name %>
+</p>
+<p>Current active sessions:</p>
+<% sessionID.forEach(id=> { %>
+    <p>Session ID: <%= id %>
+    </p>
+    <p>UserID: <%= JSON.parse(sessions[id]).passport.user %>
+    </p>
+    <% if (user.id !==JSON.parse(sessions[id]).passport.user) { %>
+        <form action="/admin/<%= id %>" method="post">
+            <button type="submit" class="btn btn-secondary">Revoke
+                session</button>
+        </form>
+        <% } else{ %>
+            <p>Admin session</p>
+            <% }%>
+                <hr>
+                <% }) %>
+                    <a href="/auth/logout" class="btn btn-secondary">Logout</a>

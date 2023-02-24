@@ -15,7 +15,6 @@ const getUserByEmailIdAndPassword = (email: string, password: string, done: (err
 
 const getUserById = (id: number, done: (error: any, user: Express.User | false | null) => void) => {
   let user = userModel.findById(id);
-
   if (user) {
     return done(null, user);
   }

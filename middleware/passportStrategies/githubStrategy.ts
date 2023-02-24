@@ -1,6 +1,6 @@
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
-import { addNewUser } from "../../controllers/userController";
+import { addNewUser, getUserById } from "../../controllers/userController";
 import * as dotenv from 'dotenv'
 dotenv.config();
 
@@ -18,7 +18,7 @@ const githubStrategy: GitHubStrategy = new GitHubStrategy(
     },
     async (req: Express.Request, accessToken: string, refreshToken: string, profile: any, done: (err?: Error | null, profile?: any) => void) => {
         addNewUser(profile._json.id, profile._json.name);
-        return done(null, profile._json);
+        return getUserById(profile._json.id, done);
     }
 );
 
