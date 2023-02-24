@@ -18,12 +18,7 @@ passport.serializeUser(function (user: Express.User, done: ((error: any, id: num
 });
 
 passport.deserializeUser(function (id: number, done: ((error: any, user: Express.User | false | null) => void)) {
-  let user = getUserById(id);
-  if (user) {
-    done(null, user);
-  } else {
-    done({ message: "User not found" }, null);
-  }
+  return getUserById(id, done);
 });
 
 const passportLocalStrategy: PassportStrategy = {

@@ -1,19 +1,27 @@
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
+import { addNewUser } from "../../controllers/userController";
+import * as dotenv from 'dotenv'
+dotenv.config();
+
+
+const GITHUB_CLIENT_ID = `${process.env.GITHUB_CLIENT_ID}`;
+const GITHUB_CLIENT_SECRET = `${process.env.GITHUB_CLIENT_SECRET}`;
 
 
 const githubStrategy: GitHubStrategy = new GitHubStrategy(
     {
-        clientID: " ",
-        clientSecret: "",
-        callbackURL: "",
+        clientID: GITHUB_CLIENT_ID,
+        clientSecret: GITHUB_CLIENT_SECRET,
+        callbackURL: "http://localhost:8000/auth/github/callback",
         passReqToCallback: true
     },
-
     async (req: Express.Request, accessToken: string, refreshToken: string, profile: any, done: (err?: Error | null, profile?: any) => void) => {
-        return done(null, profile);
+        addNewUser(profile._json.id, profile._json.name);
+        return done(null, profile._json);
     }
 );
+
 
 const passportGitHubStrategy: PassportStrategy = {
     name: 'github',

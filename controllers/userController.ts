@@ -13,19 +13,26 @@ const getUserByEmailIdAndPassword = (email: string, password: string, done: (err
   return done(null, false, { message: `Couldn't find user with email: ${email}` });
 };
 
-const getUserById = (id: number) => {
+const getUserById = (id: number, done: (error: any, user: Express.User | false | null) => void) => {
   let user = userModel.findById(id);
+
   if (user) {
-    return user;
+    return done(null, user);
   }
-  return null;
+  return done(`Couldn't find user with id: ${id}`, false);
 };
 
 function isUserValid(user: Express.User, password: string) {
   return user.password === password;
 }
 
+const addNewUser = (id: number, displayName: string): void => {
+  if (userModel.findById(id)) return;
+    userModel.addGithubUser(id, displayName);
+}
+
 export {
   getUserByEmailIdAndPassword,
   getUserById,
+  addNewUser
 };

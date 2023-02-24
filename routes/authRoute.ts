@@ -6,13 +6,23 @@ const router = express.Router();
 
 router.get("/login", forwardAuthenticated, (req, res) => {
   const errorMessages = (req.session as any).messages;
-  if (errorMessages) {
+  if (errorMessages && !req.user) {
     const mostRecentErrorMessage = errorMessages[errorMessages.length - 1];
     res.render("login", { errorMessage: mostRecentErrorMessage });
   } else {
     res.render("login", { errorMessage: null });
   }
 })
+
+router.get('/github',
+  passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get("/github/callback",
+  passport.authenticate('github', {
+    failureRedirect: "/auth/login",
+    successRedirect: "/dashboard"
+  })
+);
 
 router.post(
   "/login",
